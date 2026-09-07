@@ -398,6 +398,24 @@
     position:relative; z-index:1; max-width:760px; margin-left:auto; margin-right:auto; padding-left:60px; padding-right:60px;
   }
 
+  /* ---------- bgm toggle ---------- */
+  #bgm-toggle{
+    position:fixed; right:20px; bottom:20px; z-index:40;
+    width:52px; height:52px; border-radius:50%;
+    background:#fff8ec; border:1.5px solid var(--line); color:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:0 8px 18px -6px rgba(74,56,38,.4);
+    transition:transform .2s ease, box-shadow .2s ease, color .2s ease;
+  }
+  #bgm-toggle svg{width:22px; height:22px;}
+  #bgm-toggle:hover{transform:translateY(-2px) scale(1.05); box-shadow:0 12px 24px -6px rgba(74,56,38,.5);}
+  #bgm-toggle.playing{color:var(--coral);}
+  #bgm-toggle.playing svg{animation:bgmPulse 1.6s ease-in-out infinite;}
+  @keyframes bgmPulse{0%,100%{opacity:1;} 50%{opacity:.55;}}
+  @media (prefers-reduced-motion: reduce){
+    #bgm-toggle svg{animation:none;}
+  }
+
   /* ---------- modal ---------- */
   #modal-overlay{
     position:fixed; inset:0; background:rgba(20,14,8,.72);
@@ -444,6 +462,12 @@
 </style>
 </head>
 <body>
+
+<audio id="bgm" src="audio/bgm.mp3" loop preload="none"></audio>
+<button id="bgm-toggle" aria-label="배경음악 재생">
+  <svg id="bgm-icon-off" viewBox="0 0 24 24" fill="currentColor"><path d="M4 9v6h4l5 5V4L8 9H4z"/><line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" stroke-width="2"/></svg>
+  <svg id="bgm-icon-on" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+</button>
 
 <div class="page" id="page-main">
   <div class="hole" style="top:6%;"></div>
@@ -857,6 +881,25 @@
   document.getElementById('modal-close').addEventListener('click', closeModal);
   overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+
+  var bgm = document.getElementById('bgm');
+  var bgmBtn = document.getElementById('bgm-toggle');
+  var bgmIconOff = document.getElementById('bgm-icon-off');
+  var bgmIconOn = document.getElementById('bgm-icon-on');
+  bgmBtn.addEventListener('click', function(){
+    if (bgm.paused) {
+      bgm.volume = 0.5;
+      bgm.play().catch(function(){});
+      bgmBtn.classList.add('playing');
+      bgmIconOff.style.display = 'none';
+      bgmIconOn.style.display = '';
+    } else {
+      bgm.pause();
+      bgmBtn.classList.remove('playing');
+      bgmIconOff.style.display = '';
+      bgmIconOn.style.display = 'none';
+    }
+  });
 
 })();
 
