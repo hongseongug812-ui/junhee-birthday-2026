@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>준희에게</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#faf3e8">
+<link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="준희에게">
+<link rel="icon" href="images/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:oklch(90% 0.05 27); color:#4a3826;}
+  ::-webkit-scrollbar{width:12px; height:12px;}
+  ::-webkit-scrollbar-track{background:#efe3cc;}
+  ::-webkit-scrollbar-thumb{background:#c9b08a; border-radius:8px; border:3px solid #efe3cc;}
+  ::-webkit-scrollbar-thumb:hover{background:#b89a70;}
+  html{scrollbar-color:#c9b08a #efe3cc; scrollbar-width:thin;}
+  :focus-visible{outline:2px dashed oklch(66% 0.17 27); outline-offset:3px;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+  body{
+    --paper:#faf3e8;
+    --paper-edge:#e9dcc3;
+    --kraft:#c9b08a;
+    --ink:#4a3826;
+    --ink-soft:#8a7256;
+    --coral:oklch(66% 0.17 27);
+    --coral-soft:oklch(90% 0.05 27);
+    --sage:oklch(68% 0.08 150);
+    --sage-soft:oklch(90% 0.035 150);
+    --mustard:oklch(87% 0.09 90);
+    --line:#c9b596;
+    position:relative;
+    background:var(--paper);
+    font-family:'Gowun Dodum','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--ink);
+  }
+  .page{position:relative;}
+  .page::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events:none;
+    z-index:0;
+  }
+  .hole{position:fixed; left:30px; width:16px; height:16px; border-radius:50%; background:var(--paper-edge); box-shadow:inset 0 2px 3px rgba(74,56,38,.35), 0 1px 0 rgba(255,255,255,.6); z-index:2;}
+
+  .wrap{position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 60px;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    display:flex; align-items:center; justify-content:space-between; gap:36px; flex-wrap:wrap;
+    padding:100px 0 72px;
+    text-align:center;
+  }
+  .hero-text{max-width:560px; margin:0 auto;}
+  .bunting{width:100%; max-width:340px; height:40px; display:block; margin:0 auto 6px;}
+  .hero .tag{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#fff8ec; border:1px solid var(--line);
+    padding:9px 22px 9px 26px;
+    font-family:'Nanum Pen Script',cursive; font-size:1.25rem;
+    transform:rotate(-3deg);
+    box-shadow:0 4px 10px -4px rgba(0,0,0,.18);
+    position:relative;
+  }
+  .hero .tag::before{
+    content:""; position:absolute; left:10px; top:50%; transform:translateY(-50%);
+    width:9px; height:9px; border-radius:50%; background:var(--paper); border:1px solid var(--line);
+  }
+  .hero h1{
+    font-family:'Gaegu',cursive; font-weight:700;
+    font-size:clamp(2.3rem,5.6vw,3.3rem);
+    line-height:1.28;
+    margin:.7em 0 .35em;
+  }
+  .hero h1 .accent{color:var(--coral);}
+  .hero p.sub{
+    font-family:'Nanum Pen Script',cursive;
+    font-size:1.35rem;
+    line-height:1.7;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .datebar{
+    display:flex; justify-content:center; gap:30px; flex-wrap:wrap;
+    margin-top:36px;
+    font-family:'Nanum Pen Script',cursive; font-size:1.15rem; color:var(--ink-soft);
+  }
+  .datebar b{color:var(--ink); font-weight:700;}
+
+  .filmstrip{
+    background:#fff; padding:10px 10px 16px; width:108px;
+    box-shadow:0 12px 26px -12px rgba(74,56,38,.45), 0 2px 4px rgba(74,56,38,.15);
+    transform:rotate(4deg);
+    position:relative;
+    flex:none;
+  }
+  .filmstrip .tape{position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(-3deg);}
+  .filmstrip .shot{
+    width:100%; aspect-ratio:1/1; margin-bottom:8px;
+    background:linear-gradient(140deg,#f3eee2,#e2d7c0);
+    overflow:hidden;
+  }
+  .filmstrip .shot:last-child{margin-bottom:0;}
+  .filmstrip .shot img{width:100%; height:100%; object-fit:cover; transition:transform .4s ease;}
+  .filmstrip .shot:hover img{transform:scale(1.08);}
+
+  .tape{
+    width:64px; height:24px;
+    background-color:var(--mustard);
+    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 5px, transparent 5px 10px);
+    opacity:.9;
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+  }
+  .tape.coral{background-color:var(--coral-soft);}
+  .tape.sage{background-color:var(--sage-soft);}
+
+  /* ---------- section title ---------- */
+  .section-title{text-align:center; margin:0 0 46px;}
+  .section-title .tab{
+    display:inline-block;
+    font-family:'Gaegu',cursive; font-weight:700; font-size:1.55rem;
+    background:var(--sage-soft);
+    padding:10px 30px;
+    transform:rotate(-1.5deg);
+    box-shadow:0 5px 12px -5px rgba(0,0,0,.18);
+  }
+
+  /* ---------- featured art ---------- */
+  .feature-art{text-align:center; margin:0 0 90px;}
+  .feature-art .frame-card{
+    position:relative; display:inline-block; background:#fff; padding:14px 14px 26px;
+    box-shadow:0 16px 34px -16px rgba(74,56,38,.5), 0 3px 6px rgba(74,56,38,.15);
+    transform:rotate(-1deg); max-width:100%;
+    cursor:zoom-in; overflow:hidden;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .feature-art .frame-card:hover{
+    transform:rotate(0deg) translateY(-4px);
+    box-shadow:0 22px 42px -16px rgba(74,56,38,.55), 0 4px 8px rgba(74,56,38,.18);
+  }
+  .feature-art .frame-card img{display:block; max-width:100%; width:560px; height:auto; transition:transform .5s ease;}
+  .feature-art .frame-card:hover img{transform:scale(1.04);}
+  .feature-art .cap{font-family:'Gaegu',cursive; font-weight:700; font-size:1.2rem; margin:18px 0 4px;}
+  .feature-art .sub{font-family:'Nanum Pen Script',cursive; color:var(--ink-soft); font-size:1.05rem; margin:0;}
+
+  /* ---------- album / timeline ---------- */
+  .album-scroll{
+    position:relative;
+    margin:0 -60px;
+    padding:36px 60px 44px;
+  }
+  @media (min-width:900px){
+    .album-scroll{
+      width:100vw;
+      margin-left:calc(50% - 50vw);
+      margin-right:calc(50% - 50vw);
+      padding-left:calc((100vw - 1200px) / 2 + 60px);
+      padding-right:calc((100vw - 1200px) / 2 + 60px);
+    }
+  }
+  .album{
+    position:relative; display:grid; grid-template-columns:repeat(4, 216px);
+    justify-content:center; gap:36px 28px; z-index:1;
+  }
+  @media (max-width:900px){ .album{grid-template-columns:repeat(2, 216px);} }
+  @media (max-width:480px){ .album{grid-template-columns:1fr;} }
+  .mem{position:relative; z-index:1;}
+  .album-line{position:absolute; z-index:0; pointer-events:none; overflow:visible;}
+  .mem{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease;}
+  .mem.visible{opacity:1; transform:translateY(0);}
+
+  @keyframes riseIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
+  .hero-text > *{animation:riseIn .7s ease-out backwards;}
+  .hero-text .bunting{animation-delay:.02s;}
+  .hero-text .tag{animation-delay:.1s;}
+  .hero-text h1{animation-delay:.2s;}
+  .hero-text .sub{animation-delay:.32s;}
+  .hero-text .datebar{animation-delay:.42s;}
+  .filmstrip{animation:riseIn .8s ease-out .3s backwards;}
+
+  .feature-art{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease;}
+  .feature-art.visible{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .mem, .feature-art, .hero-text > *, .filmstrip{animation:none !important; transition:none !important; opacity:1 !important; transform:none !important;}
+  }
+  .mem:last-child{margin-bottom:0;}
+  .mem .clip, .mem .memtape{position:absolute; top:-15px; left:50%; transform:translateX(-50%); z-index:2;}
+  .mem .memtape{transform:translateX(-50%) rotate(-4deg);}
+  .mem .card{
+    width:216px; background:#fff; padding:12px 12px 20px;
+    box-shadow:0 12px 26px -12px rgba(74,56,38,.45), 0 2px 4px rgba(74,56,38,.12);
+    position:relative;
+    cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .mem .card:hover{
+    box-shadow:0 22px 40px -16px rgba(74,56,38,.55), 0 4px 8px rgba(74,56,38,.18);
+    transform:rotate(var(--r, 0deg)) translateY(-4px);
+  }
+  .mem .frame{
+    aspect-ratio:4/3; background:linear-gradient(140deg,#f3eee2,#e2d7c0);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    color:var(--ink-soft);
+    position:relative;
+    overflow:hidden;
+  }
+  .mem .frame img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease;}
+  .mem .card:hover .frame img{transform:scale(1.06);}
+  .mem .frame svg{width:34px; height:34px; opacity:.55;}
+  .mem .frame .play-btn{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:36px; height:36px; border-radius:50%; background:rgba(30,20,10,.5);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .mem .frame .play-btn svg{width:14px; height:14px; fill:#fff8ec; opacity:1; margin-left:2px;}
+  .mem .stamp{
+    position:absolute; top:-12px; right:-12px; width:52px; height:52px; border-radius:50%;
+    border:1.5px dashed var(--coral); color:var(--coral);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'Nanum Pen Script',cursive; font-size:.62rem; line-height:1.15;
+    background:rgba(255,255,255,.75); transform:rotate(-9deg);
+  }
+  .mem .cap{
+    font-family:'Nanum Pen Script',cursive; font-size:1.15rem; text-align:center;
+    margin-top:10px; color:var(--ink-soft);
+  }
+  .mem .hint{
+    font-family:'Nanum Pen Script',cursive; font-size:.78rem; text-align:center;
+    color:var(--ink-faint,#b3a488); margin-top:2px;
+  }
+
+  /* ---------- letter (closed) ---------- */
+  .letter-wrap{display:flex; flex-direction:column; align-items:center; margin:88px 0 30px; text-align:center;}
+  .envelope{position:relative; width:270px; height:172px; margin-top:34px; cursor:pointer; transition:transform .25s ease, filter .25s ease;}
+  .envelope:hover{transform:translateY(-5px) rotate(-1deg); filter:drop-shadow(0 10px 14px rgba(74,56,38,.25));}
+  .envelope .body{position:absolute; inset:0; background:#e8d8ba; box-shadow:0 16px 32px -14px rgba(74,56,38,.45);}
+  .envelope .flap{position:absolute; top:0; left:0; width:0; height:0; border-left:135px solid transparent; border-right:135px solid transparent; border-top:88px solid #dcc79e;}
+  .envelope .seal{
+    position:absolute; top:70px; left:50%; transform:translate(-50%,-50%);
+    width:44px; height:44px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ec9678, var(--coral) 62%, #9c3f28 100%);
+    box-shadow:0 4px 9px rgba(0,0,0,.28);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .envelope .seal svg{width:18px; height:18px; fill:#fff2e8;}
+  .envelope .sticker{position:absolute; top:-18px; right:-16px; width:58px; height:58px; border-radius:50%; overflow:hidden; border:3px solid #fff9ef; box-shadow:0 8px 16px -6px rgba(0,0,0,.35); transform:rotate(11deg); z-index:3;}
+  .envelope .sticker img{width:100%; height:100%; object-fit:cover;}
+  .open-tag{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top:26px; background:#fff8ec; border:1.5px solid var(--line);
+    padding:13px 24px; font-family:'Gaegu',cursive; font-weight:700; font-size:1.05rem;
+    transform:rotate(-2deg); box-shadow:0 8px 16px -8px rgba(0,0,0,.22);
+    position:relative;
+    cursor:pointer; border-radius:0; background:#fff8ec;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .open-tag:hover{transform:rotate(0deg) translateY(-2px); box-shadow:0 12px 22px -10px rgba(0,0,0,.3); background:#fffaf0;}
+  .open-tag::before{content:""; position:absolute; left:10px; top:50%; transform:translateY(-50%); width:8px; height:8px; border-radius:50%; background:var(--paper); border:1.5px solid var(--line);}
+  .open-tag span{padding-left:10px;}
+
+  #page-main, #page-letter{transition:opacity .28s ease;}
+  #page-letter{display:none; opacity:0;}
+  #page-letter.active{display:block;}
+  #page-letter.active.in{opacity:1;}
+  #page-main.out{opacity:0;}
+  @media (prefers-reduced-motion: reduce){
+    #page-main, #page-letter{transition:none;}
+  }
+  .back-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#fff8ec; border:1.5px solid var(--line);
+    padding:10px 20px; font-family:'Gaegu',cursive; font-weight:700; font-size:1rem;
+    color:var(--ink); cursor:pointer; margin-top:48px;
+    box-shadow:0 6px 14px -6px rgba(0,0,0,.2);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .back-tag:hover{transform:translateX(-3px); box-shadow:0 10px 18px -8px rgba(0,0,0,.28);}
+
+  /* ---------- letters (opened) ---------- */
+  .title-sticker{
+    position:absolute; top:-22px; right:calc(50% - 150px); width:52px; height:52px;
+    border-radius:50%; overflow:hidden; border:3px solid #fff9ef;
+    box-shadow:0 6px 14px -6px rgba(0,0,0,.3); transform:rotate(-9deg);
+  }
+  .title-sticker img{width:100%; height:100%; object-fit:cover;}
+  .corkboard-wrap{position:relative; margin-top:20px;}
+  .corkboard-wrap .pin{
+    position:absolute; top:2px; left:50%; transform:translateX(-50%); z-index:3;
+    width:20px; height:20px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #f0a58a, var(--coral) 65%, #8f3a24 100%);
+    box-shadow:0 3px 6px rgba(0,0,0,.35);
+  }
+  .corkboard-wrap .tape{position:absolute; z-index:3;}
+  .letters-board{
+    background:#c7a97c; border-radius:2px; padding:48px 24px;
+    position:relative; overflow:hidden;
+  }
+  .letters-board::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.09 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events:none;
+  }
+  .letter-card{
+    position:relative; z-index:1; max-width:520px; margin:0 auto;
+    background:#fffdf6;
+    background-image:repeating-linear-gradient(to bottom, transparent 0 26px, rgba(74,56,38,.09) 26px 27px);
+    padding:44px 36px 48px;
+    box-shadow:0 20px 40px -18px rgba(0,0,0,.4);
+    text-align:left;
+    transform:rotate(-.8deg);
+    min-height:420px;
+  }
+  .letter-idx{
+    display:inline-block; background:var(--coral); color:#fff6ee;
+    font-family:'Gaegu',cursive; font-weight:700; font-size:.85rem;
+    padding:5px 12px; margin-bottom:14px; transform:rotate(-2deg);
+  }
+  .letter-nav{
+    position:relative; z-index:1; max-width:520px; margin:20px auto 0;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .letter-nav button{
+    font-family:'Gaegu',cursive; font-weight:700; font-size:.95rem;
+    background:#fff8ec; border:1.5px solid var(--line); padding:10px 20px;
+    cursor:pointer; box-shadow:0 4px 10px -4px rgba(0,0,0,.2);
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .letter-nav button:hover:not(:disabled){transform:translateY(-2px); box-shadow:0 8px 16px -6px rgba(0,0,0,.28); background:#fffaf0;}
+  .letter-nav button:disabled{opacity:.35; cursor:default; box-shadow:none;}
+  .letter-nav .page-idx{
+    font-family:'Nanum Pen Script',cursive; color:#fff8ec; font-size:1.05rem;
+  }
+  .letter-card .to{font-family:'Nanum Pen Script',cursive; font-size:1.1rem; color:var(--ink-soft); margin-bottom:1.1em;}
+  .letter-card p{
+    font-family:'Nanum Pen Script',cursive; font-size:1.08rem; line-height:26px;
+    margin:0 0 22px; color:var(--ink);
+  }
+  .letter-card .sign{text-align:right; font-family:'Nanum Pen Script',cursive; color:var(--coral); font-size:1.05rem;}
+  .letter-card .sign .date{display:block; font-size:.85rem; color:var(--ink-soft); margin-top:2px; font-family:'Nanum Pen Script',cursive;}
+
+  /* ---------- closing ---------- */
+  .closing{
+    display:flex; justify-content:center; margin:100px 0 20px;
+    opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease;
+  }
+  .closing.visible{opacity:1; transform:translateY(0);}
+  .closing-card{
+    position:relative; max-width:460px; width:100%; text-align:center;
+    background:#fff8ec; border:1.5px dashed var(--line);
+    padding:44px 32px 34px;
+    box-shadow:0 18px 36px -18px rgba(74,56,38,.4);
+    transform:rotate(-.6deg);
+  }
+  .closing-stamp{
+    position:absolute; top:-24px; left:50%; transform:translateX(-50%) rotate(-6deg);
+    width:56px; height:56px; border-radius:50%; overflow:hidden;
+    border:3px solid #fff9ef; box-shadow:0 8px 16px -6px rgba(0,0,0,.3);
+  }
+  .closing-stamp img{width:100%; height:100%; object-fit:cover;}
+  .closing-line{
+    font-family:'Gaegu',cursive; font-weight:700; font-size:1.3rem;
+    color:var(--ink); margin:0 0 10px; line-height:1.5;
+  }
+  .closing-line.accent{color:var(--coral);}
+  .closing-sign{
+    font-family:'Nanum Pen Script',cursive; font-size:1.4rem;
+    color:var(--ink-soft); margin:18px 0 0;
+  }
+  .postmark{
+    position:absolute; bottom:-16px; right:-14px; width:60px; height:60px; border-radius:50%;
+    border:1.5px dashed var(--coral); color:var(--coral); background:#fff8ec;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'Nanum Pen Script',cursive; font-size:.72rem; line-height:1.2;
+    transform:rotate(8deg);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .closing{opacity:1; transform:none; transition:none;}
+  }
+
+  footer{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+    margin-top:80px; padding:26px 0 60px; border-top:1px dashed var(--line);
+    font-family:'Nanum Pen Script',cursive; font-size:1rem; color:var(--ink-soft);
+    position:relative; z-index:1; max-width:760px; margin-left:auto; margin-right:auto; padding-left:60px; padding-right:60px;
+  }
+
+  /* ---------- modal ---------- */
+  #modal-overlay{
+    position:fixed; inset:0; background:rgba(20,14,8,.72);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; z-index:50;
+    opacity:0; visibility:hidden;
+    transition:opacity .28s ease;
+  }
+  #modal-overlay.open{opacity:1; visibility:visible;}
+  #modal-card{
+    background:#fffdf6; max-width:560px; width:100%; max-height:88vh;
+    position:relative; box-shadow:0 30px 60px -20px rgba(0,0,0,.55);
+    transform:rotate(-.6deg) scale(.94) translateY(10px);
+    display:flex; flex-direction:column;
+    transition:transform .32s cubic-bezier(.2,.9,.3,1.2);
+  }
+  #modal-overlay.open #modal-card{transform:rotate(-.6deg) scale(1) translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    #modal-overlay, #modal-card{transition:none;}
+  }
+  #modal-card .close{
+    position:absolute; top:-14px; right:-14px; width:34px; height:34px; border-radius:50%;
+    background:var(--coral); color:#fff6ee; display:flex; align-items:center; justify-content:center;
+    font-family:'Gaegu',cursive; font-weight:700; font-size:1.1rem; cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,.3); border:none;
+    z-index:2;
+  }
+  #modal-inner{overflow:auto; padding:22px 22px 26px;}
+  #modal-media{width:100%; background:#e2d7c0;}
+  #modal-media img, #modal-media video{width:100%; display:block;}
+  #modal-media .modal-shot{margin-bottom:10px;}
+  #modal-media .modal-shot:last-child{margin-bottom:0;}
+  #modal-media .modal-shot-label{
+    font-family:'Nanum Pen Script',cursive; font-size:.95rem; color:var(--ink-soft);
+    text-align:center; padding:6px 0 2px; background:#fff8ec;
+  }
+  #modal-date{font-family:'Nanum Pen Script',cursive; color:var(--coral); font-size:1.1rem; margin-top:16px;}
+  #modal-cap{font-family:'Gaegu',cursive; font-weight:700; font-size:1.2rem; margin-top:4px;}
+  #modal-detail{font-family:'Gowun Dodum',sans-serif; font-size:.98rem; line-height:1.7; color:var(--ink-soft); margin-top:12px;}
+
+  @media (max-width:520px){
+    .wrap, footer{padding-left:26px; padding-right:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page" id="page-main">
+  <div class="hole" style="top:6%;"></div>
+  <div class="hole" style="top:50%;"></div>
+  <div class="hole" style="top:94%;"></div>
+
+  <div class="wrap">
+
+    <section class="hero">
+      <div class="hero-text">
+        <svg class="bunting" viewBox="0 0 400 60" preserveAspectRatio="none">
+          <path d="M0 12 Q200 44 400 12" fill="none" stroke="var(--line)" stroke-width="2"/>
+          <polygon points="20,14 40,14 30,50" fill="var(--coral)"/>
+          <polygon points="76,20 96,20 86,54" fill="var(--sage)"/>
+          <polygon points="132,26 152,26 142,58" fill="var(--mustard)"/>
+          <polygon points="188,30 208,30 198,60" fill="var(--coral-soft)"/>
+          <polygon points="244,28 264,28 254,58" fill="var(--sage-soft)"/>
+          <polygon points="300,22 320,22 310,54" fill="var(--mustard)"/>
+          <polygon points="356,16 376,16 366,50" fill="var(--coral)"/>
+        </svg>
+        <span class="tag">생일 축하해, 준희야</span>
+        <h1>생일 축하해,<br>이제 곧 <span class="accent">어른</span>이네</h1>
+        <p class="sub">우리가 만난 지 아직 한 달도 안 됐다는 게 믿기지 않아.<br>
+        그 짧은 시간 동안 있었던 일들을 하나하나 모아봤어.<br>
+        오늘 하루는 온전히 너를 위한 날이었으면 해.</p>
+        <div class="datebar">
+          <span>시작 <b>2026.08.09</b></span>
+          <span>생일 <b>2026.10.30</b></span>
+        </div>
+      </div>
+      <div class="filmstrip">
+        <div class="tape sage" style="width:56px;height:20px;"></div>
+        <div class="shot"><img src="images/thumb/deco-junhee-oc.jpg" alt=""></div>
+        <div class="shot"><img src="images/thumb/deco-bear-oc.jpg" alt=""></div>
+        <div class="shot"><img src="images/thumb/deco-my-doodle.jpg" alt=""></div>
+      </div>
+    </section>
+
+    <section class="section-title"><span class="tab">우리의 기록들</span></section>
+
+    <div class="album-scroll">
+      <div class="album" id="album"></div>
+    </div>
+
+    <section class="section-title"><span class="tab">우리 넷을 그려준 그림</span></section>
+    <section class="feature-art">
+      <div class="frame-card" id="feature-art-frame">
+        <div class="tape coral" style="position:absolute; top:-14px; left:24px; transform:rotate(-8deg);"></div>
+        <div class="tape sage" style="position:absolute; top:-14px; right:24px; transform:rotate(7deg);"></div>
+        <img src="images/full/sketch-0904.jpg" alt="우리 넷을 그려준 그림">
+      </div>
+    </section>
+
+    <section class="letter-wrap">
+      <span class="tab" style="display:inline-block; font-family:'Gaegu',cursive; font-weight:700; font-size:1.55rem; background:var(--sage-soft); padding:10px 30px; transform:rotate(1deg); box-shadow:0 5px 12px -5px rgba(0,0,0,.18);">그리고, 편지</span>
+      <div class="envelope" id="envelope-btn">
+        <div class="body"></div>
+        <div class="flap"></div>
+        <div class="seal"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.3 5 5.6 5c1.9 0 3.4 1 4.4 2.5C11 6 12.5 5 14.4 5c3.3 0 5 3.4 3.6 6.7C15.5 16.4 12 21 12 21z"/></svg></div>
+        <div class="sticker"><img src="images/thumb/deco-sd-sticker.jpg" alt=""></div>
+      </div>
+      <div class="open-tag" id="open-tag"><span>편지 열어보기 →</span></div>
+    </section>
+
+    <section class="closing">
+      <div class="closing-card">
+        <div class="closing-stamp"><img src="images/thumb/deco-sd-sticker.jpg" alt=""></div>
+        <p class="closing-line">여기까지가, 지금까지의 이야기야.</p>
+        <p class="closing-line accent">앞으로 쓸 이야기가 훨씬 더 많았으면 좋겠다.</p>
+        <p class="closing-sign">생일 진짜 축하해, 준희야.</p>
+        <div class="postmark">2026<br>.10.30</div>
+      </div>
+    </section>
+
+    <footer>
+      <span>만든 이 : 홍성욱</span>
+      <span>SINCE 2026</span>
+    </footer>
+
+  </div>
+</div>
+
+<div class="page" id="page-letter">
+  <div class="hole" style="top:6%;"></div>
+  <div class="hole" style="top:50%;"></div>
+  <div class="hole" style="top:94%;"></div>
+
+  <div class="wrap">
+    <button class="back-tag" id="letter-back">← 돌아가기</button>
+    <section class="section-title" style="margin-top:40px; position:relative;">
+      <span class="tab">준희에게 쓴 편지</span>
+      <div class="title-sticker"><img src="images/thumb/deco-sd-sticker.jpg" alt=""></div>
+    </section>
+    <section class="letter-wrap" style="margin-top:0;">
+      <div class="corkboard-wrap">
+        <div class="pin"></div>
+        <div class="tape" style="top:10px; left:6%; transform:rotate(-8deg);"></div>
+        <div class="tape coral" style="top:10px; right:6%; transform:rotate(7deg);"></div>
+        <div class="letters-board" id="letters-board">
+          <div class="letter-card" id="letter-card"></div>
+        </div>
+      </div>
+      <div class="letter-nav">
+        <button id="letter-prev">← 이전</button>
+        <span class="page-idx" id="letter-page-idx"></span>
+        <button id="letter-next">다음 →</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="modal-overlay">
+  <div id="modal-card">
+    <button class="close" id="modal-close">×</button>
+    <div id="modal-inner">
+      <div id="modal-media"></div>
+      <div id="modal-date"></div>
+      <div id="modal-cap"></div>
+      <div id="modal-detail"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  var CAMERA_ICON = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="14" width="36" height="26" rx="3"/><path d="M16 14l3-5h10l3 5"/><circle cx="24" cy="27" r="8"/></svg>';
+  var CALENDAR_ICON = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="10" width="34" height="30" rx="3"/><path d="M7 18h34"/><path d="M15 6v8M33 6v8"/><path d="M24 23l1.8 3.7 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" fill="currentColor" stroke="none" opacity=".55"/></svg>';
+  var CLOCK_ICON = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="17"/><path d="M24 14v10l7 5"/></svg>';
+  var HEART_ICON = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 40S6 28 6 15c0-7 6-11 11-8 3 2 5 5 7 8 2-3 4-6 7-8 5-3 11 1 11 8 0 13-18 25-18 25z"/></svg>';
+  var GAME_ICON = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="16" width="36" height="18" rx="9"/><path d="M15 21v8M11 25h8"/><circle cx="32" cy="22" r="1.6" fill="currentColor" stroke="none"/><circle cx="36" cy="26" r="1.6" fill="currentColor" stroke="none"/></svg>';
+  var PHONE_ICON = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 8c2 0 4 4 4 6 0 1-3 3-3 4 0 3 6 13 9 13 1 0 3-3 4-3 2 0 6 2 6 4 0 3-3 6-6 6C19 38 8 27 8 18c0-3 3-10 6-10z"/></svg>';
+  var PLAY_BTN = '<span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff8ec"/></svg></span>';
+  var CLIP_SVG = '<svg class="clip" width="26" height="32" viewBox="0 0 26 32"><rect x="3" y="0" width="20" height="28" rx="6" fill="#9c7b52" stroke="#6e5236" stroke-width="1.4"/><line x1="13" y1="4" x2="13" y2="24" stroke="#6e5236" stroke-width="1.4"/><polygon points="7,28 19,28 13,32" fill="#9c7b52" stroke="#6e5236" stroke-width="1"/></svg>';
+
+  var MEMORIES = [
+    { stamp:"2026<br>.08.09", cap:"인연의 시작, 그리고 꿈 이야기", img:"images/full/first-fox.jpg", thumb:"images/thumb/first-fox.jpg",
+      detail:"쿠라테일 활동 중 거의 처음 만난 날. 서로의 꿈 이야기를 나누기 시작했어." },
+    { stamp:"2026<br>.08.12", cap:"밖에서 처음 노숙한 준희", icon:HEART_ICON,
+      detail:"집에 못 들어가서 처음으로 밖에서 밤을 지새운 날이야." },
+    { stamp:"2026<br>.08.15", cap:"애교 부리던 준희", icon:HEART_ICON,
+      detail:"이날따라 유독 애교가 많았던 날." },
+    { stamp:"2026<br>.08.16", cap:"준희씨라고 부르기 시작한 날", icon:PHONE_ICON,
+      detail:"준희씨라고 부르며 집안 사정을 듣기 시작했어. 카페 알바 중에 친구 실수로 7500원을 대신 내주면서, 본격적으로 '아빠 돈 뜯기'가 시작된 날이기도 해." },
+    { stamp:"2026<br>.08.17", cap:"내 자캐 그려주고, “아빠”라고 부르기 시작한 날", img:"images/full/chibi-0817.jpg", thumb:"images/thumb/chibi-0817.jpg",
+      detail:"준희가 내 자캐를 처음 그려줬고, 그때부터 나를 ‘아빠’라고 부르기 시작했어. 저녁엔 준희가 멘탈이 나가서 통화로 서로의 과거 이야기를 나눴어." },
+    { stamp:"2026<br>.08.18", cap:"왜 자길 챙기냐고 물었던 날", icon:HEART_ICON,
+      detail:"본인을 왜 챙겨주는지 의문을 가졌던 날이야. 서로 의지하면서 고민 상담을 시작했고, 이때 번호를 교환하고 실제로 만나서 놀자는 이야기가 처음 나왔어." },
+    { stamp:"2026<br>.08.19", cap:"새벽에 처음 털어놓은 진심", img:"images/full/msg-0819.jpg", thumb:"images/thumb/msg-0819.jpg",
+      detail:"준희가 처음으로 새벽에 장문으로 마음을 털어놓은 날." },
+    { stamp:"2026<br>.08.20", cap:"서로의 이야기를 하고 부쩍 친해진 날", img:"images/full/msg-0820.jpg", thumb:"images/thumb/msg-0820.jpg",
+      detail:"개인 사정과 지난 이야기들을 나누고 부쩍 친해졌어. 두 번째 장문 메시지를 받은 날." },
+    { stamp:"2026<br>.08.21", cap:"같이 게임하며 놀았던 날", icon:GAME_ICON,
+      detail:"스팀 게임 'It Takes Two'를 같이 녹화하면서 플레이했어." },
+    { stamp:"2026<br>.08.22", cap:"힘들었던 번아웃, 그래도 버텨준 날", img:"images/full/msg-0822.jpg", thumb:"images/thumb/msg-0822.jpg",
+      detail:"크루가 해체되고 내 번아웃이 시작된 날. 준희의 세 번째 장문 메시지를 받았어." },
+    { stamp:"2026<br>.08.23", cap:"떠난다는 말에 밤새 붙잡아준 날", img:"images/full/msg-0823.jpg", thumb:"images/thumb/msg-0823.jpg",
+      detail:"내가 떠난다고 선언한 후, 준희가 밤새 장문으로 붙잡았어. 결국 남기로 했어." },
+    { stamp:"2026<br>.08.24", cap:"11월 20일, 넷이 다 같이 만나기로 한 약속", img:"images/full/promise-0824.jpg", thumb:"images/thumb/promise-0824.jpg",
+      detail:"준희가 11월 20일에 넷이서 만나서 놀자고 강제로(?) 선언한 날. 준희의 인생 고민도 들어줬어." },
+    { stamp:"2026<br>.08.25", cap:"엄마 만들어달라고 떼쓴 준희", icon:HEART_ICON,
+      detail:"엄마를 만들어달라고 떼를 쓴 날." },
+    { stamp:"2026<br>.08.26", cap:"체육복 잃어버린 준희", icon:CALENDAR_ICON,
+      detail:"체육복을 잃어버려서 한바탕 소동이 있었던 날." },
+    { stamp:"2026<br>.08.27", cap:"미피에 빠져버린 준희", img:"images/full/miffy-0827.jpg", thumb:"images/thumb/miffy-0827.jpg",
+      detail:"준희가 미피에 빠지기 시작한 날. 통방에서 현타 와서 화냈다가, 미안하다고 몰래 울기도 했어." },
+    { stamp:"2026<br>.08.28", cap:"넷이 같이 유튜브 본 날", icon:GAME_ICON,
+      detail:"넷이 다 같이 모여서 유튜브 영상을 봤어." },
+    { stamp:"2026<br>.08.29", cap:"뱟코가 아프기 시작한 날", icon:HEART_ICON,
+      detail:"이날부터 며칠간 몸이 아팠어." },
+    { stamp:"2026<br>.08.30", cap:"이번엔 내가 먼저 보낸 진심", img:"images/full/msg-0830.jpg", thumb:"images/thumb/msg-0830.jpg",
+      detail:"이번엔 내가 먼저 장문으로 마음을 전한 날." },
+    { stamp:"08.31<br>~09.02", cap:"내 생일 선물로 4일 동안 그려준 그림", img:"images/full/bday-gift.jpg", thumb:"images/thumb/bday-gift.jpg",
+      detail:"8/31 내 생일에 맞춰 준희가 선물로 그림을 그려주기 시작했고, 완성해서 받았어. 배경화면으로 설정하고 대학 친구들한테 자랑했어." },
+    { stamp:"2026<br>.09.01", cap:"홍성욱 대학 개강", icon:CALENDAR_ICON,
+      detail:"대학교 개강한 날이야." },
+    { stamp:"2026<br>.09.03", cap:"새벽에 전화로 고민 들어준 날", icon:PHONE_ICON,
+      detail:"새벽 0시에 전화해서 준희 고민을 들어주다가, 통화 중에 준희가 울었어." },
+    { stamp:"2026<br>.09.04", cap:"이틀째 새벽마다 힘들었던 날", icon:HEART_ICON,
+      detail:"이틀 연속으로 새벽에 부정적인 감정이 몰려와서 울었어. 아침이 되어서야 겨우 풀렸어." },
+    { stamp:"2026<br>.09.05", cap:"내년에 같이 보러 가기로 한 불꽃놀이 (영상)", video:"images/video/fireworks-0905.mov", thumb:"images/thumb/video-0905.jpg",
+      detail:"준희가 알바 끝나고 불꽃놀이 축제에 다녀와서 영상을 보내줬어. 내년에도 같이 가자고 먼저 말해줬어." },
+    { stamp:"2026<br>.09.06", cap:"알바 친구 때문에 힘들었지만, 저녁엔 같이 운동가기로 한 날", img:"images/full/alba-0906.jpg", thumb:"images/thumb/alba-0906.jpg",
+      detail:"같이 알바 하는 친구가 배려 안 해주고 일을 다 시켜서 힘들었던 날이야. 그 친구한테 방송 쪽 도와주는 사람이랑 썸타다가 1월 1일에 고백하라는 소리까지 들었대. 오늘 7시엔 면접을 보고, 8시엔 같이 운동을 나가기로 했어." },
+    { stamp:"2026<br>.09.07", cap:"새벽에 또 한 번, 진심을 담은 장문", img:"images/full/msg-0907.jpg", thumb:"images/thumb/msg-0907.jpg",
+      detail:"전화도 안 받고 잠들어버린 나한테 장난스럽게 투덜대면서도, 아침 운동 조심히 다녀오라고 챙겨준 새벽 메시지야. 자존감을 높이려 노력 중이라는 것, 너무 의지만 하는 것 같아 미안하다는 것, 그래도 내가 해주는 말들은 다 기억하고 있다는 것까지 — 솔직한 마음을 잔뜩 눌러 담아 보내줬어." },
+    { stamp:"오늘,<br>그리고", stampSize:".72rem", cap:"지금도 계속되는 중, 여기서부턴 아직 안 쓰인 페이지야", icon:CLOCK_ICON,
+      detail:"그리고 지금도 계속 쌓여가는 중이야." }
+  ];
+
+  var LETTERS = [
+    { idx:"1번째 편지", to:"To. 준희에게", date:"2026.09.06", sign:"9월 6일의 홍성욱",
+      body:[
+        "안녕 준희야. 우리의 인연이 8월 9일부터 시작이 됐네. 근데 벌써 9월 6일이네, 만난 지 30일도 좀 안 됐어. 네 생일 때까지는 아직 많이 남았지만 — 너는 나를 위해 4일이나 힘들게 그림을 그려줬는데 이건 아닌 것 같아서, 지금부터 띄엄띄엄 쓰려고 해.",
+        "우리가 만약 다른 선택을 했으면 어떻게 됐을까, 라는 생각이 종종 들어. 네가 초반에 쿠라테일을 지원하고 나갔었으면 어땠을까. 팀 해체 후 내 번아웃을 네가 잡아줬는데도 결국 내가 떠나게 됐다면 우리는 어떻게 됐을까. 많은 선택지 중에 우리는 이런 선택을 했고, 나는 지금까지 후회하지 않고 행복해. 너는 어떨지 모르겠지만.",
+        "네가 처음 아빠라고 불렀을 때부터 왠지 모르게 책임감이 생긴 것 같아. 너의 과거를 듣고 나서는 행복하게 해줘야겠다는 생각도 들었고, 동시에 우리가 괜히 너를 잡아서 꿈에서 멀어지게 한 것 같은 죄책감도 좀 생겼어. 네가 잘못한 게 아니라 그냥 내 마음속 이야기니까 너무 깊게 생각하진 마.",
+        "처음엔 그냥 사업적인 마인드로 대했던 것 같은데, 어느새 내 진심과 정을 계속 주고 있더라. 아직 30일도 안 됐다는 게 진짜 웃기면서 신기해. 이렇게 짧은 시간에 한 사람에게 이만큼 정을 준 적도 처음인 것 같아. 요즘은 하루 종일 네 걱정, 어떻게 하면 네가 행복해질까 그 생각을 많이 하는 것 같아.",
+        "네가 꿈에 대한 확신이 없는데 내가 지원해준다고 했을 때 고맙다고 했잖아. 근데 사실 나도 너한테 고마운 게 많아. 내가 이렇게 목표를 가지고 활동하게 된 것도 너 덕분이고, 요즘 너 덕에 웃고 행복한 것 같아. 어제 불꽃놀이 갈 때 내년에도 같이 가자고 먼저 말해준 것도 고마웠어.",
+        "솔직히 나는 온라인에서 사람 만나는 것 자체가 꺼려지고 조심스러운 사람인데, 예비군 갔을 때 억지로 참여시킨 것도 사실 웃기긴 했어. 근데 제일 궁금한 건 — 아무리 정을 줬다고 해도 떠나려는 나를 그렇게 울면서까지 잡고, 필참하라고까지 하는 걸 보면, 5살이나 차이 나는 사람을 뭐가 그렇게 속상하다고 그렇게까지 챙기려는지 모르겠어. 이건 나중에 네가 차차 말해줄 거니까 넘어갈게.",
+        "요즘 보면 여자친구처럼 걱정해주고 그러는데, 고맙지만 나도 너처럼 받는 게 어색한 사람이라 어떻게 해야 할지 잘 모르겠어. 근데 일단 나는 너부터 챙겼으면 좋겠어. 맨날 아프다고 하는 거 보면 마음이 안 좋아. 아프지 않고 실컷 놀기만 하면 얼마나 좋을까 싶어.",
+        "나중에 네가 성인이 되면 하고 싶은 거 다 하자. 같이 놀러도 다니고, 만나서 하소연도 하고 수다도 떨고. 그 전에 우리 더 친해지는 것부터 하자. 이 편지를 주는 날이 되면 너랑 나는 지금보다 훨씬 가까워지겠지. 그때쯤엔 아무 걱정 없이 자존감도 올라서, 아픈 과거가 없었던 원래의 김준희를 보고 있으면 좋겠어.",
+        "이제 성인이 되면 뭐 해먹고 살아야 하나 고민이 많아지겠지만, 이건 대학 들어가고 2학년 때부터 해도 괜찮아. 나도 지금 그런 고민이 많은데 너는 벌써부터 하면 힘들 것 같아. 그냥 네 나이에 맞게 놀고, 그런 생각은 나중으로 미뤄. 우울모드나 부정모드 찾아오면 바로 나를 호출해.",
+        "이건 꼭 말해주고 싶었어. 태어나줘서 고맙고, 잘 커줘서 고맙고, 우리랑 놀아줘서 고마워. 다음에 또 이거 디코에 추가하러 올게. 항상 고맙고 아낀다."
+      ]
+    }
+  ];
+
+  function el(html){ var d=document.createElement('div'); d.innerHTML=html; return d.firstElementChild; }
+
+  var albumEl = document.getElementById('album');
+  MEMORIES.forEach(function(m, i){
+    var rot = [-3,2.5,-1.5,3,-2,2,-2.5,3,-1.8,2.2,-2.8,1.5][i % 12];
+    var deco = (i % 2 === 0)
+      ? CLIP_SVG
+      : '<div class="memtape tape ' + (i % 4 === 1 ? 'coral' : 'sage') + '"></div>';
+    var mediaHtml;
+    if (m.video) {
+      mediaHtml = '<img src="'+m.thumb+'" alt="">' + PLAY_BTN;
+    } else if (m.img || m.images) {
+      mediaHtml = '<img src="'+m.thumb+'" alt="">';
+    } else {
+      mediaHtml = m.icon;
+    }
+    var stampStyle = m.stampSize ? ' style="font-size:'+m.stampSize+';"' : '';
+    var card = el(
+      '<div class="mem">' +
+        deco +
+        '<div class="card" style="--r:'+rot+'deg; transform:rotate(var(--r))">' +
+          '<div class="frame">'+mediaHtml+'</div>' +
+          '<div class="stamp"'+stampStyle+'>'+m.stamp+'</div>' +
+          '<div class="cap">'+m.cap+'</div>' +
+          '<div class="hint">눌러서 자세히 보기</div>' +
+        '</div>' +
+      '</div>'
+    );
+    card.querySelector('.card').addEventListener('click', function(){ openModal(m); });
+    albumEl.appendChild(card);
+  });
+
+  function drawAlbumLines(){
+    Array.prototype.slice.call(albumEl.querySelectorAll('.album-line')).forEach(function(l){ l.remove(); });
+    var mems = Array.prototype.slice.call(albumEl.querySelectorAll('.mem'));
+    if (!mems.length) return;
+    var rows = [];
+    mems.forEach(function(m){
+      var top = m.offsetTop;
+      var row = rows.filter(function(r){ return Math.abs(r.top - top) < 2; })[0];
+      if (!row) { row = { top: top, items: [] }; rows.push(row); }
+      row.items.push(m);
+    });
+    rows.forEach(function(row){
+      var lefts = row.items.map(function(m){ return m.offsetLeft; });
+      var rights = row.items.map(function(m){ return m.offsetLeft + m.offsetWidth; });
+      var left = Math.min.apply(null, lefts) - 14;
+      var right = Math.max.apply(null, rights) + 14;
+      var w = right - left;
+      var sag = Math.min(16, Math.max(6, w / 40));
+      var h = sag + 10;
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('class', 'album-line');
+      svg.setAttribute('width', w);
+      svg.setAttribute('height', h);
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      svg.style.left = left + 'px';
+      svg.style.top = (row.top - 15 - 4) + 'px';
+      var path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', 'M2,4 Q' + (w/2) + ',' + h + ' ' + (w-2) + ',4');
+      path.setAttribute('stroke', 'var(--kraft)');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-dasharray', '1 7');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+      albumEl.appendChild(svg);
+    });
+  }
+  drawAlbumLines();
+  window.addEventListener('load', drawAlbumLines);
+
+  var featureFrame = document.getElementById('feature-art-frame');
+  if (featureFrame) {
+    featureFrame.addEventListener('click', function(){
+      openModal({
+        img:'images/full/sketch-0904.jpg',
+        stamp:'우리 넷을 그려준 그림',
+        cap:'',
+        detail:''
+      });
+    });
+  }
+  var lineResizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(lineResizeTimer);
+    lineResizeTimer = setTimeout(drawAlbumLines, 150);
+  });
+
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.mem, .feature-art, .closing').forEach(function(elToWatch){
+      revealObserver.observe(elToWatch);
+    });
+  } else {
+    document.querySelectorAll('.mem, .feature-art, .closing').forEach(function(elToShow){
+      elToShow.classList.add('visible');
+    });
+  }
+
+  var PARAS_PER_PAGE = 5;
+  var PAGES = [];
+  LETTERS.forEach(function(l){
+    for (var i = 0; i < l.body.length; i += PARAS_PER_PAGE) {
+      PAGES.push({
+        idx: l.idx, to: l.to, sign: l.sign, date: l.date,
+        paras: l.body.slice(i, i + PARAS_PER_PAGE),
+        isFirst: i === 0,
+        isLast: i + PARAS_PER_PAGE >= l.body.length
+      });
+    }
+  });
+
+  var letterCard = document.getElementById('letter-card');
+  var pageIdxEl = document.getElementById('letter-page-idx');
+  var prevBtn = document.getElementById('letter-prev');
+  var nextBtn = document.getElementById('letter-next');
+  var currentPage = 0;
+
+  function renderLetterPage(){
+    var p = PAGES[currentPage];
+    var html = '<span class="letter-idx">'+p.idx+'</span>';
+    if (p.isFirst) html += '<div class="to">'+p.to+'</div>';
+    html += p.paras.map(function(t){ return '<p>'+t+'</p>'; }).join('');
+    if (p.isLast) html += '<div class="sign">'+p.sign+'<span class="date">'+p.date+'</span></div>';
+    letterCard.innerHTML = html;
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = currentPage === PAGES.length - 1;
+    pageIdxEl.textContent = (currentPage + 1) + ' / ' + PAGES.length;
+  }
+  prevBtn.addEventListener('click', function(){
+    if (currentPage > 0) { currentPage--; renderLetterPage(); letterCard.scrollIntoView({behavior:'smooth', block:'center'}); }
+  });
+  nextBtn.addEventListener('click', function(){
+    if (currentPage < PAGES.length - 1) { currentPage++; renderLetterPage(); letterCard.scrollIntoView({behavior:'smooth', block:'center'}); }
+  });
+  renderLetterPage();
+
+  var envBtn = document.getElementById('envelope-btn');
+  var openTag = document.getElementById('open-tag');
+  var pageMain = document.getElementById('page-main');
+  var pageLetter = document.getElementById('page-letter');
+  var backBtn = document.getElementById('letter-back');
+
+  function goToLetterPage(){
+    pageMain.classList.add('out');
+    setTimeout(function(){
+      pageMain.style.display = 'none';
+      pageLetter.classList.add('active');
+      window.scrollTo(0, 0);
+      requestAnimationFrame(function(){ pageLetter.classList.add('in'); });
+    }, 220);
+  }
+  function goToMainPage(){
+    pageLetter.classList.remove('in');
+    setTimeout(function(){
+      pageLetter.classList.remove('active');
+      pageMain.style.display = '';
+      window.scrollTo(0, 0);
+      requestAnimationFrame(function(){ pageMain.classList.remove('out'); });
+    }, 220);
+  }
+  envBtn.addEventListener('click', goToLetterPage);
+  openTag.addEventListener('click', goToLetterPage);
+  backBtn.addEventListener('click', goToMainPage);
+
+  var overlay = document.getElementById('modal-overlay');
+  var modalMedia = document.getElementById('modal-media');
+  var modalDate = document.getElementById('modal-date');
+  var modalCap = document.getElementById('modal-cap');
+  var modalDetail = document.getElementById('modal-detail');
+
+  function openModal(m){
+    if (m.video) {
+      modalMedia.innerHTML = '<video src="'+m.video+'" controls playsinline></video>';
+    } else if (m.images) {
+      modalMedia.innerHTML = m.images.map(function(it){
+        return '<div class="modal-shot"><img src="'+it.src+'" alt="">' +
+          (it.label ? '<div class="modal-shot-label">'+it.label+'</div>' : '') +
+        '</div>';
+      }).join('');
+    } else if (m.img) {
+      modalMedia.innerHTML = '<img src="'+m.img+'" alt="">';
+    } else {
+      modalMedia.innerHTML = '';
+    }
+    modalDate.innerHTML = m.stamp.replace('<br>','');
+    modalCap.textContent = m.cap;
+    modalDetail.textContent = m.detail || '';
+    overlay.classList.add('open');
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    modalMedia.innerHTML = '';
+  }
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+
+})();
+
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+
+</body>
+</html>
