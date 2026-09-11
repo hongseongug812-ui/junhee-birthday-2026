@@ -398,19 +398,6 @@
     position:relative; z-index:1; max-width:760px; margin-left:auto; margin-right:auto; padding-left:60px; padding-right:60px;
   }
 
-  /* ---------- cursor fox ---------- */
-  #cursor-fox{
-    position:fixed; top:0; left:0; width:52px; height:52px;
-    pointer-events:none; z-index:45; opacity:0;
-    transition:opacity .3s ease;
-    will-change:transform;
-  }
-  #cursor-fox.active{opacity:1;}
-  #cursor-fox img{
-    width:100%; height:100%; object-fit:contain;
-    filter:drop-shadow(0 6px 10px rgba(74,56,38,.35));
-  }
-
   /* ---------- bgm toggle ---------- */
   #bgm-toggle{
     position:fixed; right:20px; bottom:20px; z-index:40;
@@ -475,8 +462,6 @@
 </style>
 </head>
 <body>
-
-<div id="cursor-fox"><img src="images/icons/cursor-fox.png" alt=""></div>
 
 <audio id="bgm" src="audio/bgm.mp3" loop preload="none"></audio>
 <button id="bgm-toggle" aria-label="배경음악 재생">
@@ -901,32 +886,6 @@
   document.getElementById('modal-close').addEventListener('click', closeModal);
   overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
-
-  (function(){
-    var fox = document.getElementById('cursor-fox');
-    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var hasFinePointer = window.matchMedia('(pointer: fine)').matches;
-    if (!fox || prefersReduced || !hasFinePointer) { if (fox) fox.style.display = 'none'; return; }
-
-    var targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
-    var curX = targetX, curY = targetY;
-    var started = false;
-
-    document.addEventListener('mousemove', function(e){
-      targetX = e.clientX; targetY = e.clientY;
-      if (!started) { started = true; curX = targetX; curY = targetY; fox.classList.add('active'); }
-    });
-    document.addEventListener('mouseleave', function(){ fox.classList.remove('active'); });
-    document.addEventListener('mouseenter', function(){ if (started) fox.classList.add('active'); });
-
-    function tick(){
-      curX += (targetX - curX) * 0.14;
-      curY += (targetY - curY) * 0.14;
-      fox.style.transform = 'translate(' + (curX + 16) + 'px,' + (curY + 16) + 'px)';
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  })();
 
   var bgm = document.getElementById('bgm');
   var bgmBtn = document.getElementById('bgm-toggle');
