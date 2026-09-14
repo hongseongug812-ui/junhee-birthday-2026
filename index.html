@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
 <title>준희에게</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#faf3e8">
@@ -54,6 +55,84 @@
     z-index:0;
   }
   .hole{position:fixed; left:30px; width:16px; height:16px; border-radius:50%; background:var(--paper-edge); box-shadow:inset 0 2px 3px rgba(74,56,38,.35), 0 1px 0 rgba(255,255,255,.6); z-index:2;}
+
+  /* ---------- birthday gate ---------- */
+  #access-overlay{
+    position:fixed; inset:0; z-index:10020;
+    background:#0c0c0c; color:#f4ead9;
+    display:none; align-items:center; justify-content:center; text-align:center;
+  }
+  .access-inner{max-width:320px; padding:32px;}
+  .access-title{
+    font-family:'Gaegu',cursive; font-weight:700; font-size:1.2rem; margin-bottom:22px;
+  }
+  #access-input{
+    display:block; margin:0 auto 18px; width:180px;
+    background:transparent; border:none; border-bottom:1px solid #6b5f4c;
+    color:#f4ead9; font-family:'Gowun Dodum',sans-serif; font-size:1rem;
+    text-align:center; padding:8px 4px; outline:none;
+  }
+  #access-input.shake{animation:gateShake .35s ease;}
+  #access-submit{
+    font-family:'Gaegu',cursive; font-weight:700; font-size:.95rem;
+    background:var(--coral); color:#fff6ee; border:none; border-radius:999px;
+    padding:9px 24px; cursor:pointer; box-shadow:0 8px 16px -6px rgba(0,0,0,.3);
+    transition:transform .18s ease;
+  }
+  #access-submit:hover{transform:translateY(-2px);}
+
+  #gate-overlay{
+    position:fixed; inset:0; z-index:9999;
+    background:#0c0c0c; color:#f4ead9;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    transition:opacity 1.1s ease;
+  }
+  #gate-overlay.gate-hide{opacity:0; pointer-events:none;}
+  .gate-inner{max-width:420px; padding:32px;}
+  #gate-locked .gate-lock-title{
+    font-family:'Gaegu',cursive; font-weight:700; font-size:1.25rem; margin-bottom:20px; opacity:.92;
+  }
+  #gate-locked .gate-countdown{
+    font-family:'Nanum Pen Script',cursive; font-size:2rem; letter-spacing:.02em;
+  }
+  #gate-locked .gate-sub{
+    font-family:'Gowun Dodum',sans-serif; font-size:.85rem; color:#bfae95; margin-top:18px; line-height:1.6;
+  }
+  .gate-admin-trigger{
+    margin-top:28px; color:#3a352c; font-size:1.1rem; cursor:pointer; user-select:none; opacity:.6;
+  }
+  .gate-admin-box{
+    display:none; margin-top:12px; justify-content:center;
+  }
+  .gate-admin-box.show{display:flex;}
+  #gate-admin-input{
+    background:transparent; border:none; border-bottom:1px solid #6b5f4c;
+    color:#f4ead9; font-family:'Gowun Dodum',sans-serif; font-size:.9rem;
+    text-align:center; padding:6px 4px; width:140px; outline:none;
+  }
+  #gate-admin-input.shake{animation:gateShake .35s ease;}
+  @keyframes gateShake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-6px);}
+    75%{transform:translateX(6px);}
+  }
+  #gate-reveal{display:none;}
+  #gate-reveal .gate-date{
+    font-family:'Gaegu',cursive; font-weight:700; font-size:1.1rem; color:#bfae95; letter-spacing:.06em; opacity:0;
+  }
+  #gate-reveal .gate-msg{
+    font-family:'Nanum Pen Script',cursive; font-size:2.1rem; margin-top:18px; opacity:0;
+  }
+  #gate-reveal.play .gate-date{animation:gateFade .9s ease both;}
+  #gate-reveal.play .gate-msg{animation:gateFade .9s ease .9s both;}
+  @keyframes gateFade{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    #gate-overlay{transition:none;}
+    #gate-reveal .gate-date, #gate-reveal .gate-msg{animation:none !important; opacity:1 !important; transform:none !important;}
+  }
 
   .wrap{position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 60px;}
 
@@ -351,6 +430,37 @@
   }
   .letter-card .sign{text-align:right; font-family:'Nanum Pen Script',cursive; color:var(--coral); font-size:1.05rem;}
   .letter-card .sign .date{display:block; font-size:.85rem; color:var(--ink-soft); margin-top:2px; font-family:'Nanum Pen Script',cursive;}
+  .letter-stamp-wrap{
+    position:absolute; left:10px; bottom:10px; z-index:3; cursor:pointer;
+  }
+  .letter-stamp{
+    display:block; width:92px; height:auto; object-fit:cover;
+    border:4px solid #fffdf6; box-shadow:0 5px 14px -6px rgba(0,0,0,.4);
+    transform:rotate(-16deg); transform-origin:bottom left;
+    transition:width .32s cubic-bezier(.34,1.56,.64,1), transform .32s cubic-bezier(.34,1.56,.64,1), box-shadow .32s ease;
+  }
+  .letter-stamp-wrap:hover .letter-stamp{box-shadow:0 8px 18px -6px rgba(0,0,0,.5);}
+  .letter-stamp-wrap.is-open .letter-stamp{
+    width:300px; transform:rotate(-2deg);
+    box-shadow:0 20px 40px -12px rgba(0,0,0,.55);
+  }
+  .letter-stamp-cap{
+    position:absolute; left:4px; right:4px; bottom:4px;
+    background:rgba(40,30,24,.72); color:#fff8ec; border-radius:0 0 6px 6px;
+    font-family:'Gowun Dodum',sans-serif; font-size:.72rem; line-height:1.5;
+    padding:8px 10px; opacity:0; transform:translateY(6px);
+    pointer-events:none; transition:opacity .25s ease .05s, transform .25s ease .05s;
+  }
+  .letter-stamp-cap b{display:block; font-family:'Gaegu',cursive; font-size:.85rem; margin-bottom:2px;}
+  .letter-stamp-wrap.is-open .letter-stamp-cap{opacity:1; transform:translateY(0);}
+  .letter-voice{margin-top:26px; text-align:center;}
+  .letter-voice-btn{
+    font-family:'Gaegu',cursive; font-weight:700; font-size:.95rem;
+    background:var(--coral); color:#fff6ee; border:none; border-radius:999px;
+    padding:11px 24px; cursor:pointer; box-shadow:0 8px 16px -6px rgba(0,0,0,.3);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .letter-voice-btn:hover{transform:translateY(-2px); box-shadow:0 12px 20px -6px rgba(0,0,0,.35);}
 
   /* ---------- closing ---------- */
   .closing{
@@ -400,7 +510,7 @@
 
   /* ---------- bgm toggle ---------- */
   #bgm-toggle{
-    position:fixed; right:20px; bottom:20px; z-index:40;
+    position:fixed; right:20px; bottom:20px; z-index:10001;
     width:52px; height:52px; border-radius:50%;
     background:#fff8ec; border:1.5px solid var(--line); color:var(--ink);
     display:flex; align-items:center; justify-content:center;
@@ -463,6 +573,157 @@
 </head>
 <body>
 
+<div id="access-overlay">
+  <div class="access-inner">
+    <div class="access-title">비밀번호를 입력해줘</div>
+    <input type="password" id="access-input" autocomplete="off" placeholder="비밀번호">
+    <button id="access-submit" type="button">확인</button>
+  </div>
+</div>
+<div id="gate-overlay">
+  <div class="gate-inner" id="gate-locked">
+    <div class="gate-lock-title">생일 전에는 아직 열 수 없는 선물이야</div>
+    <div class="gate-countdown" id="gate-countdown">-</div>
+    <div class="gate-sub">2026.10.30, 그날 다시 열어봐.</div>
+    <div class="gate-admin-trigger" id="gate-admin-trigger">·</div>
+    <div class="gate-admin-box" id="gate-admin-box">
+      <input type="password" id="gate-admin-input" placeholder="암호" autocomplete="off">
+    </div>
+  </div>
+  <div class="gate-inner" id="gate-reveal">
+    <div class="gate-date">2026.10.30</div>
+    <div class="gate-msg">준희야, 생일 축하해.</div>
+  </div>
+</div>
+<script>
+(function(){
+  var ADMIN_KEY = 'hsu0426';
+  var ACCESS_KEY = 'YSH1030';
+
+  var BDAY = new Date(2026,9,30,0,0,0);
+  var overlay = document.getElementById('gate-overlay');
+  var locked = document.getElementById('gate-locked');
+  var reveal = document.getElementById('gate-reveal');
+  var countdownEl = document.getElementById('gate-countdown');
+  var accessOverlay = document.getElementById('access-overlay');
+  var accessInput = document.getElementById('access-input');
+  var accessSubmit = document.getElementById('access-submit');
+  var timer = null;
+
+  var isAdmin = false;
+  try {
+    var qp = new URLSearchParams(location.search);
+    isAdmin = qp.get('key') === ADMIN_KEY;
+    if (qp.get('reset') === '1') localStorage.removeItem('access_ok');
+  } catch(e){}
+
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+
+  function finishOpen(){
+    overlay.classList.add('gate-hide');
+  }
+
+  function requireAccess(){
+    var accessOk = false;
+    try { accessOk = localStorage.getItem('access_ok') === '1'; } catch(e){}
+    if (accessOk) { finishOpen(); return; }
+
+    accessOverlay.style.display = 'flex';
+    accessInput.focus();
+    var tryAccess = function(){
+      if (accessInput.value === ACCESS_KEY) {
+        try { localStorage.setItem('access_ok', '1'); } catch(e){}
+        accessOverlay.style.display = 'none';
+        finishOpen();
+      } else {
+        accessInput.value = '';
+        accessInput.classList.remove('shake');
+        void accessInput.offsetWidth;
+        accessInput.classList.add('shake');
+      }
+    };
+    accessSubmit.addEventListener('click', tryAccess);
+    accessInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryAccess(); });
+  }
+
+  function renderCountdown(){
+    var diff = BDAY - new Date();
+    if (diff <= 0) {
+      clearInterval(timer);
+      showReveal();
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor(diff % 86400000 / 3600000);
+    var m = Math.floor(diff % 3600000 / 60000);
+    var s = Math.floor(diff % 60000 / 1000);
+    countdownEl.textContent = 'D-' + d + '  ' + pad(h) + ':' + pad(m) + ':' + pad(s);
+  }
+
+  function showReveal(){
+    locked.style.display = 'none';
+    reveal.style.display = 'block';
+    reveal.classList.add('play');
+    setTimeout(function(){ requireAccess(); }, 3000);
+  }
+
+  if (isAdmin) {
+    requireAccess();
+  } else if (new Date() >= BDAY) {
+    showReveal();
+  } else {
+    renderCountdown();
+    timer = setInterval(renderCountdown, 1000);
+
+    var tryPlayBgm = function(){
+      var bgmEl = document.getElementById('bgm');
+      var btn = document.getElementById('bgm-toggle');
+      var iconOff = document.getElementById('bgm-icon-off');
+      var iconOn = document.getElementById('bgm-icon-on');
+      if (!bgmEl || bgmEl.dataset.userPaused === '1' || !bgmEl.paused) return;
+      bgmEl.volume = 0.5;
+      bgmEl.play().then(function(){
+        if (btn) btn.classList.add('playing');
+        if (iconOff) iconOff.style.display = 'none';
+        if (iconOn) iconOn.style.display = '';
+      }).catch(function(){});
+    };
+    window.addEventListener('load', tryPlayBgm);
+    ['pointerdown','keydown','touchstart'].forEach(function(evt){
+      document.addEventListener(evt, tryPlayBgm);
+    });
+  }
+
+  var trigger = document.getElementById('gate-admin-trigger');
+  var box = document.getElementById('gate-admin-box');
+  var input = document.getElementById('gate-admin-input');
+  if (trigger) {
+    trigger.addEventListener('click', function(){
+      box.classList.add('show');
+      input.focus();
+    });
+    document.addEventListener('keydown', function(e){
+      if ((e.key === 't' || e.key === 'T') && document.activeElement !== input) {
+        box.classList.add('show');
+        input.focus();
+      }
+    });
+    input.addEventListener('keydown', function(e){
+      if (e.key !== 'Enter') return;
+      if (input.value === ADMIN_KEY) {
+        if (timer) clearInterval(timer);
+        requireAccess();
+      } else {
+        input.value = '';
+        input.classList.remove('shake');
+        void input.offsetWidth;
+        input.classList.add('shake');
+      }
+    });
+  }
+})();
+</script>
+
 <audio id="bgm" src="audio/bgm.mp3" loop preload="none"></audio>
 <button id="bgm-toggle" aria-label="배경음악 재생">
   <svg id="bgm-icon-off" viewBox="0 0 24 24" fill="currentColor"><path d="M4 9v6h4l5 5V4L8 9H4z"/><line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" stroke-width="2"/></svg>
@@ -495,6 +756,7 @@
         <div class="datebar">
           <span>시작 <b>2026.08.09</b></span>
           <span>생일 <b>2026.10.30</b></span>
+          <span>준희를 알게 된 지 <b id="day-counter">0</b>일</span>
         </div>
       </div>
       <div class="filmstrip">
@@ -661,12 +923,18 @@
       detail:"내가 알바 가서, 준희 혼자 학교에서 심심하게 헌터헌터를 하면서 보냈어. 그래도 같이 통화하면서 걸었어." },
     { stamp:"2026<br>.09.11", cap:"여권 만들다 실패하고, 장난으로 고백받은 날", img:"images/full/confess-0911.jpg", thumb:"images/thumb/confess-0911.jpg",
       detail:"준희가 여권을 만들려다 실패했어. 내가 용돈을 줬는데 그것 때문에 부모님한테 괜한 오해가 쌓이기도 했고, 준희가 장난으로 나한테 고백한 날이기도 해." },
+    { stamp:"2026<br>.09.12", cap:"다시 유튜브를 시작한다고 말해준 날", img:"images/full/trust-0912.jpg", thumb:"images/thumb/trust-0912.jpg",
+      detail:"아직 정해진 것도 없고 미래도 불확실하고 바쁜 시기였는데도, 준희가 다시 버튜버의 꿈을 시작한다는 걸 나한테 말해줬어. 나를 믿고 얘기해줘서 너무 고마운 날이야." },
+    { stamp:"2026<br>.09.13", cap:"알바에서 속 아파 고생했지만, 발로란트는 2승 1패", img:"images/full/sep13.jpg", thumb:"images/thumb/sep13.jpg",
+      detail:"오늘은 김준희가 알바를 갔는데 속이 아파서 고생을 했어. 그래도 집에 와서 준희랑 발로란트 3판을 진행했고, 2승 1패를 했어." },
     { stamp:"오늘,<br>그리고", stampSize:".72rem", cap:"지금도 계속되는 중, 여기서부턴 아직 안 쓰인 페이지야", icon:CLOCK_ICON,
       detail:"그리고 지금도 계속 쌓여가는 중이야." }
   ];
 
   var LETTERS = [
     { idx:"1번째 편지", to:"To. 준희에게", date:"2026.09.06", sign:"9월 6일의 홍성욱",
+      photo:{ img:"images/full/writing-0906.jpg", thumb:"images/thumb/writing-0906.jpg", cap:"편지 쓰는 중",
+        detail:"너한테 줄 첫 편지를 쓰고 있던 날이야." },
       body:[
         "안녕 준희야. 우리의 인연이 8월 9일부터 시작이 됐네. 근데 벌써 9월 6일이네, 만난 지 30일도 좀 안 됐어. 네 생일 때까지는 아직 많이 남았지만 — 너는 나를 위해 4일이나 힘들게 그림을 그려줬는데 이건 아닌 것 같아서, 지금부터 띄엄띄엄 쓰려고 해.",
         "우리가 만약 다른 선택을 했으면 어떻게 됐을까, 라는 생각이 종종 들어. 네가 초반에 쿠라테일을 지원하고 나갔었으면 어땠을까. 팀 해체 후 내 번아웃을 네가 잡아줬는데도 결국 내가 떠나게 됐다면 우리는 어떻게 됐을까. 많은 선택지 중에 우리는 이런 선택을 했고, 나는 지금까지 후회하지 않고 행복해. 너는 어떨지 모르겠지만.",
@@ -678,6 +946,21 @@
         "나중에 네가 성인이 되면 하고 싶은 거 다 하자. 같이 놀러도 다니고, 만나서 하소연도 하고 수다도 떨고. 그 전에 우리 더 친해지는 것부터 하자. 이 편지를 주는 날이 되면 너랑 나는 지금보다 훨씬 가까워지겠지. 그때쯤엔 아무 걱정 없이 자존감도 올라서, 아픈 과거가 없었던 원래의 김준희를 보고 있으면 좋겠어.",
         "이제 성인이 되면 뭐 해먹고 살아야 하나 고민이 많아지겠지만, 이건 대학 들어가고 2학년 때부터 해도 괜찮아. 나도 지금 그런 고민이 많은데 너는 벌써부터 하면 힘들 것 같아. 그냥 네 나이에 맞게 놀고, 그런 생각은 나중으로 미뤄. 우울모드나 부정모드 찾아오면 바로 나를 호출해.",
         "이건 꼭 말해주고 싶었어. 태어나줘서 고맙고, 잘 커줘서 고맙고, 우리랑 놀아줘서 고마워. 다음에 또 이거 디코에 추가하러 올게. 항상 고맙고 아낀다."
+      ]
+    },
+    { idx:"2번째 편지", to:"To. 준희에게", date:"2026.09.12", sign:"9월 12일의 홍성욱",
+      photo:{ img:"images/full/always-0912.jpg", thumb:"images/thumb/always-0912.jpg", cap:"늘 옆에 있을게", stamp:"2026<br>.09.12",
+        detail:"언제든 네가 힘들 때도, 즐거울 때도 — 나는 항상 네 옆에 있을게." },
+      voice:{ src:"audio/voice-congrats.m4a" },
+      body:[
+        "안녕, 일주일 만에 편지를 또 적는 거 같아 준희야. 벌써 첫 번째 편지를 쓴 지 일주일 정도가 지난 것 같아. 일주일이 예전에는 짧다면 짧게 느껴졌던 것 같은데, 우리가 맨날 아침에 점심에 저녁에 통화해서 그런가 길게도 느껴지네.",
+        "오늘 네가 버튜버의 꿈을 다시 시작한다고 하는 거 보고 너무 좋았고 다행이라고 생각했어. 그리고 나를 믿어주는구나 싶어서, 한편으로는 안심했고 한편으로는 불안했던 것 같아.",
+        "너를 만나고 여기까지 오는 과정에서 짧은 시간이지만 굉장히 친해진 것 같아. 솔직히 내 인생은 일, 잠, 일, 잠이었고 내 몸은 생각 안 하고 살았는데, 네가 오고 나서 제2의 인생의 전환점이 온 것 같아. 고마워, 나는 너한테 너무 고마워. 너는 나한테 늘 해준 거 없이 받기만 한다고 죄송하고 고맙다고 하는데,",
+        "나는 그 반대야. 너는 나에게 과분하게 해주고 있고, 항상 고맙다고 생각하고 있어. 내가 표현을 잘 못 해서 그런 거니까 글이라도 적어서 내 진심을 알아줬으면 좋겠어. 늘 말하지만 나는 너의 행복이 지금도 우선이야. 그래서 네가 해준 만큼 너에게 보답을 하고 싶은 거고, 너는 내가 못 이룬 꿈을 적어도 시도라도 해서 실패라도 했으면 좋겠어. 성공하면 물론 최고겠지만.",
+        "나는 포기해서 지금도 후회하고 있는데, 우리 딸 준희만큼은 마음껏 해보고 실패도 해보고 성공도 해봤으면 좋겠어. 내가 진짜 응원하고, 내 몸이 부서지는 한이 있더라도 도와주고 지원해줄 테니까 걱정 말아.",
+        "요즘 스트레스도 많이 받는 것 같은데, 조금만 — 진짜 조금만 — 노력해서 이 시기만 넘어가고, 몸 관리해서 안 아프고 건강한 모습으로 우리 놀러 가자. 나는 네가 헤헤헤헤 이렇게 바보같이 웃을 때, 내가 항상 바보라고 놀리지만 나도 그때 행복해. 네가 웃고 행복해하는구나 느끼면서, 다행이다 싶은 감정이랑 네가 행복해서 나도 좋다는 감정이 같이 들어.",
+        "항상 너랑 대화하면 즐겁고 같이 게임해도 즐거워. 그냥 너라는 존재랑 함께해서 즐거운 것 같아. 그리고 요즘 인간관계에 대해서 너무 신경 쓰던데, 너무 신경 안 써도 괜찮아. 만약에 우리 준희 인간관계가 망가져서 아무도 없다고 해도 나는 준희 옆에서 묵묵히 있을 거야. 언제든지 네가 힘들어서 오든 즐거워서 오든, 그냥 너의 편이 될 거고 너를 지탱하는 사람이 되고 싶다.",
+        "오랜만에 써서 너무 오글거린다. 암튼 조금만 화이팅해서 함께 너의 꿈을 향해서 가보자. 여태까지 너무 수고 많았어, 준희야."
       ]
     }
   ];
@@ -794,11 +1077,14 @@
   var PAGES = [];
   LETTERS.forEach(function(l){
     for (var i = 0; i < l.body.length; i += PARAS_PER_PAGE) {
+      var isLast = i + PARAS_PER_PAGE >= l.body.length;
       PAGES.push({
         idx: l.idx, to: l.to, sign: l.sign, date: l.date,
         paras: l.body.slice(i, i + PARAS_PER_PAGE),
         isFirst: i === 0,
-        isLast: i + PARAS_PER_PAGE >= l.body.length
+        isLast: isLast,
+        photo: isLast ? l.photo : null,
+        voice: isLast ? l.voice : null
       });
     }
   });
@@ -815,7 +1101,37 @@
     if (p.isFirst) html += '<div class="to">'+p.to+'</div>';
     html += p.paras.map(function(t){ return '<p>'+t+'</p>'; }).join('');
     if (p.isLast) html += '<div class="sign">'+p.sign+'<span class="date">'+p.date+'</span></div>';
+    if (p.photo) {
+      html += '<div class="letter-stamp-wrap">' +
+        '<img class="letter-stamp" src="'+p.photo.thumb+'" alt="'+p.photo.cap+'">' +
+        '<div class="letter-stamp-cap"><b>'+p.photo.cap+'</b>'+(p.photo.detail || '')+'</div>' +
+      '</div>';
+    }
+    if (p.voice) {
+      html += '<div class="letter-voice">' +
+        '<audio class="letter-voice-audio" src="'+p.voice.src+'" preload="none"></audio>' +
+        '<button class="letter-voice-btn" type="button">🎧 음성 편지 듣기</button>' +
+      '</div>';
+    }
     letterCard.innerHTML = html;
+    if (p.photo) {
+      letterCard.querySelector('.letter-stamp-wrap').addEventListener('click', function(){ this.classList.toggle('is-open'); });
+    }
+    if (p.voice) {
+      var voiceBtn = letterCard.querySelector('.letter-voice-btn');
+      var voiceAudio = letterCard.querySelector('.letter-voice-audio');
+      voiceBtn.addEventListener('click', function(){
+        if (voiceAudio.paused) {
+          voiceAudio.currentTime = 0;
+          voiceAudio.play().catch(function(){});
+          voiceBtn.textContent = '⏸ 재생 중...';
+        } else {
+          voiceAudio.pause();
+          voiceBtn.textContent = '🎧 음성 편지 듣기';
+        }
+      });
+      voiceAudio.addEventListener('ended', function(){ voiceBtn.textContent = '🎧 음성 편지 듣기'; });
+    }
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage === PAGES.length - 1;
     pageIdxEl.textContent = (currentPage + 1) + ' / ' + PAGES.length;
@@ -895,18 +1211,31 @@
   var bgmIconOn = document.getElementById('bgm-icon-on');
   bgmBtn.addEventListener('click', function(){
     if (bgm.paused) {
+      bgm.dataset.userPaused = '0';
       bgm.volume = 0.5;
       bgm.play().catch(function(){});
       bgmBtn.classList.add('playing');
       bgmIconOff.style.display = 'none';
       bgmIconOn.style.display = '';
     } else {
+      bgm.dataset.userPaused = '1';
       bgm.pause();
       bgmBtn.classList.remove('playing');
       bgmIconOff.style.display = '';
       bgmIconOn.style.display = 'none';
     }
   });
+
+  var dayCounterEl = document.getElementById('day-counter');
+  if (dayCounterEl) {
+    var MET_DAY = new Date(2026,7,9);
+    var updateDayCounter = function(){
+      var diffDays = Math.floor((new Date() - MET_DAY) / 86400000) + 1;
+      dayCounterEl.textContent = diffDays;
+    };
+    updateDayCounter();
+    setInterval(updateDayCounter, 60000);
+  }
 
 })();
 
