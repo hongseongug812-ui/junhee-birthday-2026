@@ -1,0 +1,19 @@
+# 원본 사진/영상 등 사이트가 직접 참조하지 않는 개인 파일 (images/, audio/ 는 예외)
+*.png
+*.jpg
+*.jpeg
+*.mov
+*.mp4
+*.mp3
+*.m4a
+*.zip
+.DS_Store
+README.txt
+
+!images/
+!images/**
+!audio/
+!audio/**
+
+# Local Netlify folder
+.netlify
